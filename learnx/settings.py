@@ -78,8 +78,15 @@ WSGI_APPLICATION = 'learnx.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'colearn',
+        'HOST': 'localhost',
+        'PORT': '80',
+        'USER': 'root',
+        'PASSWORD': '',
+        "OPTIONS": {
+            "unix_socket": "/opt/lampp/var/mysql/mysql.sock",
+        },        
     }
 }
 
