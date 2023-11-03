@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'api.apps.ApiConfig',
+    'rest_framework',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +58,7 @@ ROOT_URLCONF = 'colearn.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,8 +79,15 @@ WSGI_APPLICATION = 'colearn.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'colearn',
+        'HOST': 'localhost',
+        'PORT': '80',
+        'USER': 'root',
+        'PASSWORD': '',
+        "OPTIONS": {
+            "unix_socket": "/opt/lampp/var/mysql/mysql.sock",
+        },        
     }
 }
 
@@ -99,9 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTH_USER_MODEL = 'users.CustomUser'  # Menggunakan model CustomUser sebagai model pengguna
+LOGIN_REDIRECT_URL = 'dashboard'
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topicxs/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
