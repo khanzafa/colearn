@@ -1,0 +1,8 @@
+{% for task in tasks %}
+    <div class="task">
+        <h2>{{ task.title }}</h2>
+        <p>{{ task.description }}</p>
+        <p>{{ task.due_date }}</p>
+        <p>{{ task.completed }}</p>
+    </div>
+{% endfor %}

@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from watchman.views import status
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('', include(('users.urls', 'users'), namespace='users')),
+    path('', include(('courses.urls', 'courses'), namespace='courses')),
+    path('', include(('enrollments.urls', 'enrollments'), namespace='enrollments')),
+    path('', include(('materials.urls', 'materials'), namespace='materials')),
+    path('', include(('quizzes.urls', 'quizzes'), namespace='quizzes')),
+    path('', include(('tasks.urls', 'tasks'), namespace='tasks')),
+    path('status/', status)
+
 ]

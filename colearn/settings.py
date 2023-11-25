@@ -40,7 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'api.apps.ApiConfig',
     'rest_framework',
+    # 'admin',
+    'enrollments',
+    'materials',
+    'quizzes',
+    'tasks',
     'users',
+    'courses',
+    'watchman',
 ]
 
 MIDDLEWARE = [
@@ -71,8 +78,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'colearn.wsgi.application'
 
+WSGI_APPLICATION = 'colearn.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -110,8 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'users.CustomUser'  # Menggunakan model CustomUser sebagai model pengguna
-LOGIN_REDIRECT_URL = 'dashboard'
+AUTH_USER_MODEL = 'users.CustomUser'  # Menggunakan model CustomUser sebagai model pengguna
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topicxs/i18n/
@@ -129,6 +137,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = []
+for app in INSTALLED_APPS:
+    app_static_dir = os.path.join(BASE_DIR, app, 'static')
+    if os.path.exists(app_static_dir):
+        STATICFILES_DIRS.append(app_static_dir)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

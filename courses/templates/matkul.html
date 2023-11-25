@@ -1,0 +1,19 @@
+
+<table>
+  <thead>
+    <tr>
+      <th>Course Name</th>
+      <th>Schedule</th>
+      <th>Instructor</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for course in courses %}
+    <tr></tr>
+      <td>{{ course.title }}</td>
+      <td>{{ schedule }}</td>
+      <td>{{ course.instructor }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

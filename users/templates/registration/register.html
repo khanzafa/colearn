@@ -1,0 +1,38 @@
+<!--users/templates/users/register.html-->
+{% load static %}
+
+<head>
+  <title>Login and Signup Form Responsive Widget Template</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{% static 'users/css/login.css' %}" />
+  <script src="{% static 'users/js/login.js' %}"></script>
+</head>
+
+<body>
+  <div class="container" id="register-form">
+    <h2>Sign Up Form</h2>
+    <form action="register" method="post">
+      {% csrf_token %}
+      {{form}}
+      <!-- <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" required />
+
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required />
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required />
+
+      <label for="psw-repeat"><b>Repeat Password</b></label>
+      <input
+        type="password"
+        placeholder="Repeat Password"
+        name="psw-repeat"
+        required
+      /> -->
+
+      <button type="submit" value="signup">Sign Up</button>
+    </form>
+    <button id="login-btn" onclick="location.href='login';">Already have an account? Login</button>
+  </div>
+</body>
