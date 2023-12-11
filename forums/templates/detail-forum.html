@@ -1,0 +1,146 @@
+{% extends 'base.html' %} {% block title %}Co-Learn Forum{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row text-center">
+    <div class="col">
+      <div class="card bg-primary text-white">
+        <div class="card-title">
+          <h1 class="mb-0">FORUM</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="row my-4">  
+    <!-- Forum Content -->
+    <div class="col-md-8">
+      <div class="card">
+          <div class="card-body row gy-2">
+              <div class="col-md-2">
+                  <div class="d-flex flex-column justify-content-between">
+                      <form action="{% url 'forums:vote-forum' forum.id %}" method="post" class="d-grid col-6 mx-auto">
+                          {% csrf_token %}
+                          <button name="vote" value="like" type="submit" class="badge bg-secondary mb-2">Like</button>
+                          <span class="badge bg-secondary mb-2">{{ forum.votes }} Likes</span>
+                          <button name="vote" value="dislike" type="submit" class="badge bg-secondary mb-2">Dislike</button>
+                      </form>
+                  </div>
+              </div>
+              <div class="col">
+                  <h5 class="card-title">{{ forum.title }}</h5>
+                  <p id="forum-paragraph">{{ forum.description }}</p>
+  
+                  <!-- Tags, Author, and Date -->
+                  <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex">
+                          {% for tag in forum.tags %}
+                              <div class="badge bg-primary me-2">{{ tag.tag_name }}</div>
+                          {% endfor %}
+                      </div>
+                      <div class="d-flex">
+                          <div class="badge bg-secondary me-2">{{ forum.author.first_name }} {{ forum.author.last_name }}</div>
+                          <div class="badge bg-secondary me-2">{{ forum.date_created|date:"d F Y" }}</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+      <!-- Comments Section -->
+      <div class="card mt-3">
+          <div class="card-body">
+              <h5 class="card-title">Comments</h5>
+              {% for comment in forum.comments %}
+                  <hr>
+                  <div class="row gy-2">
+                      <div class="col-md-2">
+                          <!-- Vote, Reply, and Date -->
+                          <div class="d-flex flex-column justify-content-between">
+                              <form action="{% url 'forums:vote-comment' comment.id %}" method="post" class="d-grid col-6 mx-auto">
+                                  {% csrf_token %}
+                                  <button name="vote" value="like" type="submit" class="badge bg-secondary mb-2">Like</button>
+                                  <span class="badge bg-secondary mb-2">{{ comment.votes }} Likes</span>
+                                  <button name="vote" value="dislike" type="submit" class="badge bg-secondary mb-2">Dislike</button>
+                              </form>
+                          </div>
+                      </div>
+                      <div class="col d-flex flex-column">
+                          <p>{{ comment.comment }}</p>
+                          <div class="mt-auto align-items-end">
+                              <div class="badge bg-secondary me-2">
+                                  {{ comment.user.first_name }} {{ comment.user.last_name }}
+                              </div>
+                              <div class="badge bg-secondary me-2">
+                                  {{ comment.date_created|date:"d F Y" }}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row gy-2">
+                    <div class="col-md-2"></div>
+                    <div class="col">
+                        <!-- Replies Section -->
+                        <div class="mb-0 mt-2">
+                            {% for reply in comment.replies %}
+                                <hr class="my-0">
+                                <div class="row my-2">
+                                    <div class="col d-flex justify-content-between">
+                                        <p>{{ reply.reply }} | <a href="">{{ reply.user.first_name }} {{ reply.user.last_name }}</a></p>
+                                        <!-- date -->
+                                        <span>
+                                            <p>{{ reply.date_created|date:"d/m/Y" }}</p>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                
+                        <!-- Reply Form -->
+                        <hr class="my-2">
+                        <form method="post" action="{% url 'forums:post-reply' comment.id %}" class="mb-0">
+                            {% csrf_token %}
+                            <textarea name="content" class="form-control mb-2" placeholder="Reply to this comment"></textarea>
+                            <button type="submit" class="btn btn-primary">Reply</button>
+                        </form>
+                    </div>
+                </div>
+                
+              {% endfor %}
+              <hr>
+          </div>
+      </div>
+
+      <!-- Comment Form -->
+      <div class="card mt-3">
+        <form class="card-body" method="post" action="{% url 'forums:post-comment' forum.id %}">
+          {% csrf_token %}
+          <textarea name="content" class="form-control mb-2" placeholder="Add a comment"></textarea>
+          <button type="submit" class="btn btn-primary">Post Comment</button>
+      </form>
+      </div>
+    </div>
+  
+    <!-- Trending Forum -->
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h5 class="mb-0">Trending Forum</h5>
+          </div>
+          <!-- daftar trending forum -->
+          <ul class="list-group">
+            {% for forum in hot_forums %}
+            <li class="list-group-item">{{ forum.title }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+{% endblock %}

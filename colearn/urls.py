@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from watchman.views import status
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +29,11 @@ urlpatterns = [
     path('', include(('materials.urls', 'materials'), namespace='materials')),
     path('', include(('quizzes.urls', 'quizzes'), namespace='quizzes')),
     path('', include(('tasks.urls', 'tasks'), namespace='tasks')),
-    path('status/', status)
+    path('', include(('dashboard.urls', 'dashboard'), namespace='dashboard')),
+    path('', include(('forums.urls', 'forums'), namespace='forums')),
+    # path('status/', status)
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

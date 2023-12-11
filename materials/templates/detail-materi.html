@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% block title %}College Learning{% endblock %} 
+{% block content %}
+<div class="container-fluid">
+  <div class="row text-center">
+    <div class="col">
+      <div class="card bg-primary text-white">
+        <div class="card-title">
+          <h1 class="mb-0">Materi Matematika</h1>
+        </div>
+      </div>
+    </div>
+  </div>    
+  <div class="row">
+    <div class="col">
+        {{ material.file.url }}
+        {% if material.file %}
+        <embed src="{{ material.file.url }}" type="application/pdf" width="100%" height="600px" />
+        {% else %}
+            <p>File PDF tidak tersedia</p>
+        {% endif %}
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+1. **Konsep Dasar SPK dan Pentingnya**
+   - Sistem Pendukung Keputusan (SPK) adalah sistem yang membantu pengambilan keputusan dengan menyediakan informasi dan analisis. Penting karena meningkatkan kualitas dan efisiensi keputusan.
+
+2. **Langkah-Langkah dalam Pengambilan Keputusan dengan SPK**
+   - Langkah-langkah utama melibatkan identifikasi masalah, pengumpulan data, pemodelan, analisis, dan evaluasi keputusan. SPK membantu dalam masing-masing langkah ini.
+
+3. **Implementasi AHP dalam SPK**
+   - Implementasi AHP melibatkan: menentukan tujuan, membuat hierarki, melakukan perbandingan pasangan untuk kriteria dan alternatif, menghitung nilai bobot, dan melakukan konsistensi.
+
+4. **Perbedaan SPK dan SIM**
+   - SPK berfokus pada pengambilan keputusan dengan analisis data, sementara SIM menangani informasi umum untuk operasi harian dan perencanaan jangka panjang.
+
+5. **Peran Teknologi Informasi dalam Pengembangan SPK**
+   - Teknologi informasi mendukung SPK dengan menyediakan platform untuk pengumpulan, analisis data, dan menyediakan antarmuka pengguna yang memudahkan akses dan interpretasi informasi. Peningkatan teknologi mendukung keputusan lebih cepat dan tepat.

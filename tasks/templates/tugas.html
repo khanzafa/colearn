@@ -1,8 +1,63 @@
-{% for task in tasks %}
-    <div class="task">
-        <h2>{{ task.title }}</h2>
-        <p>{{ task.description }}</p>
-        <p>{{ task.due_date }}</p>
-        <p>{{ task.completed }}</p>
+{% extends 'base.html' %}
+
+{% block title %}College Learning{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+    <!-- HEADER -->
+    <div class="row text-center">
+      <div class="col">
+        <div class="card bg-primary text-white ">
+          <div class="d-flex justify-content-between">
+              <a href="{% url 'courses:mata-kuliah-detail' course.id %}" class="btn btn-light d-flex align-items-center m-2">
+                  <span class="bi bi-arrow-left"></span> Kembali
+              </a>
+              <div class="card-title">
+                  <h1 class="mb-0">
+                  Tugas {{ course.title }}
+                  </h1>        
+              </div>
+              <a href="" class="float-end">
+                  <span class="btn btn-primary disabled d-flex align-items-center" disabled>                    
+                  </span>
+              </a>
+          </div>
+        </div>
+      </div>
     </div>
-{% endfor %}
+    <!-- END HEADER -->
+    <!-- MAIN -->
+    <div class="row">
+      {% for task in tasks %}
+      <div class="col-md-4 my-2">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              {{ task.title }}
+            </h5>
+            {% if task.is_submitted %}
+            <span class="badge bg-success">Sudah Mengumpulkan</span>
+            {% else %}
+            <span class="badge bg-danger">Belum Mengumpulkan</span>
+            {% endif %}
+          </div>
+          <div class="card-body">            
+            <p class="card-text">
+              Diunggah pada: {{ task.created_at }}               
+              <br>
+              Tenggat waktu: {{ task.due_date }}
+            </p>
+          </div>
+          <div class="card-footer d-grid gap-2">                                    
+            <a href="{% url 'tasks:tugas-detail' course.id task.id %}" class="btn btn-primary">Lihat Tugas</a>
+          </div>        
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>        
+</div>
+
+{% endblock %}
+                                

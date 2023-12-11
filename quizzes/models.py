@@ -5,10 +5,17 @@ User = get_user_model()
 
 # Create your models here.
 class Quiz(models.Model):
+    quiz_type = (
+        ('exercise', 'Exercise'),
+        ('test', 'Test'),
+    )
+    quiz_type = models.CharField(max_length=20, choices=quiz_type, default='exercise')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, default=Course.objects.first().id)
     title = models.CharField(max_length=200)
-    description = models.TextField()
-
+    description = models.TextField()    
+    duration = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
     def __str__(self):
         return self.title
 

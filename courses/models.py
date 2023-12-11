@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from users.models import Student, Lecturer
 
 User = get_user_model()
 
 class Course(models.Model):
+    code  = models.CharField(max_length=255, default=None)
     title = models.CharField(max_length=255)
     description = models.TextField()
+    sks = models.IntegerField(default=0)
     instructor = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role' : 'lecturer'})
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -33,7 +36,7 @@ class Presence(models.Model):
 
 class PresenceHistory(models.Model):
     presence = models.ForeignKey(Presence, on_delete=models.CASCADE)
-    student = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role' : 'student'})    
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     is_present = models.BooleanField(default=False)
 
     def __str__(self):

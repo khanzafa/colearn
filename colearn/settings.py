@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f)z!nxl+%yrip#4(xt)0o8l@qn+45=i6lmv##ves5@$pr$60fe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -38,16 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'api.apps.ApiConfig',
     'rest_framework',
-    # 'admin',
     'enrollments',
     'materials',
     'quizzes',
     'tasks',
     'users',
     'courses',
+    'dashboard',
     'watchman',
+    'forums',
+    
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':'colearn',
         'HOST': 'localhost',
-        'PORT': '80',
+        'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '',
         "OPTIONS": {
@@ -118,31 +119,38 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'  # Menggunakan model CustomUser sebagai model pengguna
-LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGOUT_REDIRECT_URL = '/accounts/login'
+
+# Ubah pengaturan DEFAULT_PERMISSION_CLASSES
+from django.contrib.auth.decorators import login_required
+DEFAULT_PERMISSION_CLASSES = (login_required,)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topicxs/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
-USE_TZ = True
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = []
-for app in INSTALLED_APPS:
-    app_static_dir = os.path.join(BASE_DIR, app, 'static')
-    if os.path.exists(app_static_dir):
-        STATICFILES_DIRS.append(app_static_dir)
+# STATICFILES_DIRS = []
+# for app in INSTALLED_APPS:
+#     app_static_dir = os.path.join(BASE_DIR, app, 'static')
+#     if os.path.exists(app_static_dir):
+#         STATICFILES_DIRS.append(app_static_dir)
 
+# Media files
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -19,16 +19,9 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return render(request, 'users/dashboard.html')
+            return render(request, 'registration/login.html')
         else:
             return render(
                 request, "registration/register.html",
                 {"form": form}
             )
-
-
-def dashboard(request):
-    if request.method == 'GET':
-        return render(request, 'users/dashboard.html')
-
-    

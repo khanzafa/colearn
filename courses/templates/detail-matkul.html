@@ -1,13 +1,234 @@
-<h1>ini adalah template detail</h1>
-{{ course.title }}
-{{ course.description}}
-{{ schedule.day }}
-{{ schedule.time }}
-{{ schedule.venue }}
-{{ instructor.username }}
-{{ material.title }}
-{{ material.file }}
-{{ task.title }}
-{{ task.description }}
-{{ task.file }}
+{% extends 'base.html' %} {% block title %}College Learning{% endblock %}
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+  <div class="col">
+    <div class="card bg-primary text-white ">
+      <div class="d-flex justify-content-between">
+          <a href="{% url 'courses:mata-kuliah' %}" class="btn btn-light d-flex align-items-center m-2">
+              <span class="bi bi-arrow-left"></span> Kembali
+          </a>
+          <div class="card-title">
+              <h1 class="mb-0">
+              {{ course.title }}
+              </h1>        
+          </div>
+          <a href="" class="float-end">
+              <span class="btn btn-primary disabled d-flex align-items-center" disabled>                    
+              </span>
+          </a>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="row my-2">
+    <!-- Detail Mata Kuliah -->
+    <div class="col my-2">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <b>Detail Mata Kuliah</b>
+          </h5>
+        </div>                
+        <div class="card-body">          
+          <img src="{{ lecturer.photo.url }}" class="card-img-top" alt="Foto Dosen">
+          <table class="table table-sm" style="text-align: left">
+            <tr>
+              <th>Kode</th>
+              <td>:</td>
+              <td>{{ course.code }}</td>
+            </tr>
+            <tr>
+              <th>Nama</th>
+              <td>:</td>
+              <td>{{ course.title }}</td>
+            </tr>
+            <tr>
+              <th>Dosen</th>
+              <td>:</td>
+              <td>{{ lecturer.user.first_name }} {{ lecturer.user.last_name }}</td>
+            </tr>
+            <tr>
+              <th>NIP</th>
+              <td>:</td>
+              <td>{{ lecturer.nip }}</td>
+            </tr>
+            <tr>
+              <th>SKS</th>
+              <td>:</td>
+              <td>{{ course.sks }}</td>
+            </tr>
+            <tr>
+              <th>Waktu</th>
+              <td>:</td>
+              <td>{{ schedule.day }}, {{ schedule.time }}</td>
+            </tr>
+            <tr>
+              <th>Ruang</th>
+              <td>:</td>
+              <td>{{ schedule.venue }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Presensi -->
+    <div class="col my-2">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <b>Presensi</b>
+          </h5>
+        </div>
+        <div class="card-body">          
+          <table class="table table-sm">
+            <tr>
+              <th>Waktu</th>
+              <th class="col-md-auto">Status</th>
+            </tr>
+        
+            <!-- Menampilkan informasi absensi yang sedang berlangsung jika ada -->
+            {% if live_presence %}
+            <tr>
+              <td>{{ live_presence.date|date:"d F Y" }}, {{ live_presence.start_time|time:"H:i:s" }} - {{ live_presence.end_time|time:"H:i:s" }}</td>
+              <td class="col-md-auto">
+                {% if not live_presence_history %}
+                  <form action="{% url 'courses:mata-kuliah-presence' live_presence.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="course_id" value="{{ course.id }}">
+                    <input type="hidden" name="presence_id" value="{{ live_presence.id }}">
+                    <button type="submit" class="btn btn-primary" name="action" value="absen">
+                      Absen
+                    </button>
+                  </form>                
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
+        
+            <!-- Menampilkan riwayat absensi -->
+            {% for ph in presence_historys %}
+            <tr>
+              <td>{{ ph.presence.date|date:"d F Y" }}, {{ ph.presence.end_time|time:"H:i:s" }}</td>
+              <td class="col-md-auto">
+                {% if ph.is_present %}
+                  <span class="badge bg-secondary" style="width: 100%;">Hadir</span>
+                {% else %}
+                  <span class="badge bg-secondary" style="width: 100%;">Absen</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        
+      </div>
+    </div>
+    <!-- Resource -->
+    <div class="col">
+      <!-- Materi -->
+      <div class="row my-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <b>Materi</b>
+                </h5>
+                <span class="badge bg-secondary text-muted">{{ material_count }} Materi</span>
+            </div>
+            <div class="card-body">
+                <div class="card-text d-flex justify-content-between align-items-center">       
+                    <b>Materi baru pada {{ recent_material|date:"d F Y" }}</b>
+                    <a href="{% url 'materials:materi' course.id %}" class="btn btn-primary">
+                      <i class="bi bi-box-arrow-up-right"></i> Buka
+                    </a>
+                </div>
+            </div>
+        </div>      
+        </div>
+      </div>
+      <!-- Tugas -->
+      <div class="row my-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <b>Tugas</b>
+                </h5>
+                <span class="badge bg-secondary text-muted">{{ task_count }} Tugas</span>
+            </div>
+            <div class="card-body">
+                <div class="card-text d-flex justify-content-between align-items-center">       
+                    <b>Tugas baru pada {{ recent_task|date:"d F Y" }}</b>
+                    <a href="{% url 'tasks:tugas' course.id %}" class="btn btn-primary">
+                      <i class="bi bi-box-arrow-up-right"></i> Buka
+                    </a>
+                </div>
+            </div>
+        </div>      
+        </div>
+      </div>
+      <!-- Kuis Latihan -->
+      <div class="row my-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <b>Kuis Latihan</b>
+                </h5>
+                <span class="badge bg-secondary text-muted">{{ quiz_count }} Kuis</span>
+            </div>
+            <div class="card-body">
+                <div class="card-text d-flex justify-content-between align-items-center">       
+                    <b>Kuis Latihan baru pada {{ recent_quiz|date:"d F Y" }}</b>
+                    <a href="{% url 'quizzes:kuis-latihan' course.id %}" class="btn btn-primary">
+                      <i class="bi bi-box-arrow-up-right"></i> Buka
+                    </a>
+                </div>
+            </div>
+        </div>      
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Daftar Peserta Kuliah -->
+  <div class="row">
+    <div class="col my-2">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">          
+            <h5 class="mb-0">
+              <b>Daftar Peserta Kuliah</b>
+            </h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>NRP</th>
+                <th>Jenis Kelamin</th>
+                <th>Program Studi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for student in students %}
+              <tr>
+                <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                <td>{{ student.nim }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ student.major }}</td>
+              </tr>
+              {% endfor %}
+              <!-- Add more rows for other participants -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+{% endblock %}

@@ -1,5 +1,65 @@
-{% for material in materials %}
-{{ material.title }}
-{{ material.description }}
-{{ material.file }}
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block title %}College Learning{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+    <div class="row text-center">
+        <div class="col">
+          <div class="card bg-primary text-white ">
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'courses:mata-kuliah-detail' course.id %}" class="btn btn-light d-flex align-items-center m-2">
+                    <span class="bi bi-arrow-left"></span> Kembali
+                </a>
+                <div class="card-title">
+                    <h1 class="mb-0">
+                    Materi {{ course.title }}
+                    </h1>        
+                </div>
+                <a href="" class="float-end">
+                    <span class="btn btn-primary disabled d-flex align-items-center" disabled>                    
+                    </span>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      {% for material_history in material_historys %}                  
+          {% with material=material_history.material %}          
+              <div class="col-md-4 my-2">
+                  <div class="card">
+                      {% if material.file %}
+                          <img src="{{ material.thumbnail.url }}" class="card-img-top" alt="">
+                      {% else %}
+                          <img src="" class="card-img-top" alt="" width="200" height="200">
+                      {% endif %}
+                      <div class="card-body">
+                          <h5 class="card-title">
+                              {{ material.title }}
+                          </h5>
+                          <p class="card-text">
+                              {{ material.description }}
+                          </p>
+                      </div>
+                      <div class="card-footer d-flex justify-content-between align-items-center">
+                          <a href="{{ material.file.url }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                          <a href="{{ material.file.url }}" download class="btn btn-primary btn-sm">Unduh</a>
+                          {% if material_history.is_read %}
+                              <button class="btn btn-secondary btn-sm" disabled>Sudah Dibaca</button>
+                          {% else %}
+                              <form method="POST" action="{% url 'materials:materi-terbaca' course.id material.id %}">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-success btn-sm">Tandai Sudah Dibaca</button>
+                              </form>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+          {% endwith %}
+      {% endfor %}
+  </div>
+  
+</div>
+{% endblock %}

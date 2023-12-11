@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}College Learning{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+  <div class="col">
+    <div class="card bg-primary text-white ">
+      <div class="d-flex justify-content-between">
+          <a href="{% url 'courses:mata-kuliah' %}" class="btn btn-light d-flex align-items-center m-2">
+              <span class="bi bi-arrow-left"></span> Kembali
+          </a>
+          <div class="card-title">
+              <h1 class="mb-0">
+              Kuis Latihan {{ course.title }}
+              </h1>        
+          </div>
+          <a href="" class="float-end">
+              <span class="btn btn-primary disabled d-flex align-items-center" disabled>                    
+              </span>
+          </a>
+      </div>
+    </div>
+  </div>
+    <div class="row">
+      {% for quiz in quizzes %}
+      <div class="col-md-4 my-2">
+        <div class=card>
+          <div class="card-header d-flex justify-content-center">
+            <h5 class="mb-0">
+              <b>{{ quiz.title }}</b>
+            </h5>
+          </div>
+          <div class="card-body">            
+            <table class="card-text">
+              <tr>
+                <th>Jumlah Soal</th>
+                <td>:</td>
+                <td>{{ quiz.questions_count }}</td>
+              </tr> 
+              <tr>
+                <th>Durasi</th>
+                <td>:</td>                
+                <td>{{ quiz.duration }}</td>
+              </tr>
+              <tr>
+                <th>Skor</th>
+                <td>:</td>
+                <td>{{ quiz.score }}</td>
+              </tr>
+            </table>
+          </div>
+          {% if quiz.score == '-' %}
+          <a role="button" class="btn btn-primary" href="{% url 'quizzes:kuis-detail' course.id quiz.id %}">Kerjakan</a>
+          </a>
+          {% else %}          
+          <button class="btn btn-secondary disabled">Selesai</button>
+          {% endif %}
+        </div>        
+      </div>
+      {% endfor %}
+    </div>    
+</div>
+
+{% endblock %}
+

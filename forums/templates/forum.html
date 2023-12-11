@@ -1,0 +1,141 @@
+{% extends 'base.html' %} {% block title %}Co-Learn Forum{% endblock %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block content %}
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row text-center">
+    <div class="col">
+      <div class="card bg-primary text-white">
+        <div class="card-title">
+          <h1 class="mb-0">FORUM</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="row my-2">
+    <div class="col my-2">
+      <div class="card">
+        <div class="card-body">
+          <!-- buat forum baru -->
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="forum-title" class="form-label">Forum Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="forum-title"
+                name="forum-title"
+                placeholder="Enter forum title"
+              />
+            </div>  
+            <div class="mb-3">
+              <label for="forum-content" class="form-label"
+                >Forum Content</label
+              >
+              <textarea
+                class="form-control"
+                id="forum-content"
+                name="forum-content"
+                rows="3"
+                placeholder="Enter forum content"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="forum-tags" class="form-label">Forum Tags</label>
+              <input
+                type="text"
+                class="form-control"
+                id="forum-tags"
+                name="forum-tags"
+                placeholder="Enter forum tags"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Create Forum</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-4">
+    <!-- Forum -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          {% for forum in forums %}
+          <div class="row gy-2">
+            <div class="col-md-2">
+              <!-- jumlah vote, comment, view secara vertikal-->            
+              <div class="d-flex flex-column justify-content-between">
+                <span class="badge bg-secondary mb-3">{{ forum.comment_count }} Comments</span>
+                <span class="badge bg-secondary mb-3">{{ forum.votes }} Likes</span>
+                <span class="badge bg-secondary mb-3">{{ forum.view_count }} Views</span>
+              </div>
+            </div>
+            <div class="col">
+                <h5>
+                  <a href="{%url 'forums:forum-detail' forum.id %}">
+                    {{ forum.title }}
+                  </a>                  
+                </h5>
+                <p id="forum-paragraph">
+                  {{ forum.description }}
+                </p>
+                <!-- tambahkan tag forum -->
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex">
+                    {% for tag in forum.tags %}
+                    <div class="badge bg-primary me-2">
+                      {{ tag.tag_name }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <div class="d-flex">
+                    <div class="badge bg-secondary me-2">
+                      {{ forum.author.first_name }} {{ forum.author.last_name }}
+                    </div>
+                    <div class="badge bg-secondary me-2">
+                      {{ forum.date_created|date:"d/m/Y" }}
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <hr />
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Trending Forum -->
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title">
+            <h5 class="mb-0">Trending Forum</h5>
+          </div>
+          <!-- daftar trending forum -->
+          <ul class="list-group">
+            {% for forum in hot_forums %}
+            <li class="list-group-item">{{ forum.title }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      var paragraph = $("#forum-paragraph").text();
+      var words = paragraph.split(" ");
+      var maxWords = 5;
+
+      if (words.length > maxWords) {
+        var truncatedText = words.slice(0, maxWords).join(" ") + "...";
+        $("#forum-paragraph").text(truncatedText);
+      }
+    });
+  </script>
+</div>
+{% endblock %}

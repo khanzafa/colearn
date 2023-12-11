@@ -1,0 +1,9 @@
+1. **Sistem Pendukung Keputusan (SPK)** adalah sistem yang membantu pengambilan keputusan dengan menyediakan informasi, model, dan alat analisis.
+
+2. Langkah-langkah dalam proses pengambilan keputusan menggunakan SPK melibatkan identifikasi masalah, pengumpulan data, pemodelan keputusan, pengembangan alternatif, evaluasi alternatif, pemilihan alternatif, dan implementasi keputusan.
+
+3. **Metode Analytical Hierarchy Process (AHP)** dalam pengambilan keputusan melibatkan pembuatan hirarki kriteria, penilaian relatif kriteria, pembuatan matriks perbandingan berpasangan, perhitungan vektor eigen, dan sintesis hasil.
+
+4. Perbedaan antara **Sistem Pendukung Keputusan dan Sistem Informasi Manajemen** terletak pada fokusnya. SPK lebih berorientasi pada membantu pengambilan keputusan dengan analisis data, sedangkan SIM lebih berfokus pada pengelolaan informasi operasional dan transaksional.
+
+5. Peran **teknologi informasi** dalam pengembangan SPK di era digital mencakup pengumpulan data yang lebih efisien, analisis data yang lebih canggih, pemrosesan yang cepat, dan penyediaan informasi secara real-time, memungkinkan pengambilan keputusan yang lebih akurat dan responsif.

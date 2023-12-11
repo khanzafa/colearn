@@ -1,8 +1,25 @@
-<h1>{{ quiz }}</h1>
-{% for question in questions%}
-<h2>{{ question }}</h2>
-    {% for choice in choices %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-    <label for="choice{{ forloop.counter }}">{{ choice }}</label><br>
-    {% endfor %}
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h2 class="mt-4">{{ quiz.title }}</h2>
+
+    <form method="post" action="{% url 'quizzes:kuis-detail' quiz.course.id quiz.id %}">
+      {% csrf_token %}
+      {% for question in questions %}
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">{{ question.text }}</h5>
+            {% for choice in question.choice_set.all %}
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{ question.id }}" value="{{ choice.id }}">
+                <label class="form-check-label">{{ choice.text }}</label>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary mt-4">Submit Quiz</button>
+    </form>
+  </div>
+{% endblock %}
